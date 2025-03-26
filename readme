@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY Project Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .nav {
+            margin: 20px 0;
+        }
+        .nav button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav button:hover {
+            background-color: #0056b3;
+        }
+        .projects-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .projects-table th, .projects-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .projects-table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Welcome to DIY Project Hub, Magdaline Kiarie!</div>
+    <div class="container">
+        <div class="nav">
+            <button onclick="addProject()">Add Project</button>
+            <button onclick="viewProjects()">View Projects</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+        
+        <h2>Your Projects</h2>
+        <table class="projects-table">
+            <tr>
+                <th>Project Name</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>DIY Bookshelf</td>
+                <td><button class="delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+                <td>Home Garden Setup</td>
+                <td><button class="delete-btn">Delete</button></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+
+<?php
+include 'config.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT * FROM users WHERE username='$username'";
+    $result = mysqli_query($conn, $sql);
+    
+    if ($row = mysqli_fetch_assoc($result)) {
+        if (password_verify($password, $row['password'])) {
+            session_start();
+            $_SESSION['user_id'] = $row['id'];
+            echo "Login successful.";
+        } else {
+            echo "Invalid password.";
+        }
+    } else {
+        echo "User not found.";
+    }
+}
+?>
